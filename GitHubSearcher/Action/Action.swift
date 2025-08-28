@@ -7,3 +7,9 @@
 //
 
 import Foundation
+
+enum Action {
+    case searchUser([User])
+    case getRepositories([Repository])
+    case startRepositoriesLoaing
+}
