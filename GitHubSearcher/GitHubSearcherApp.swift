@@ -12,7 +12,7 @@ import SwiftUI
 struct GitHubSearcherApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            UserSearchView()
         }
     }
 }
