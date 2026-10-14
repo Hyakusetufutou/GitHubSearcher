@@ -23,12 +23,24 @@ struct UserSearchView: View {
         NavigationView {
             VStack {
                 TextField("user name", text: $searchText)
-                    .onChange(of: searchText) { _, _ in
-                        actionCreator.searchUser(query: searchText)
-                    }
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .keyboardType(.asciiCapable)
                     .padding()
+                    .task(id: searchText) {
+                        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+                        
+                        guard !query.isEmpty else { return }
+                        
+                        do {
+                            try await Task.sleep(nanoseconds: 400_000_000)
+                        } catch {
+                            return
+                        }
+                        
+                        guard !Task.isCancelled else { return }
+                        
+                        actionCreator.searchUser(query: query)
+                    }
                 Spacer()
                 List(userSearchStore.users) { user in
                     NavigationLink(destination: RepositoryView(repositoryUrlString: user.reposUrl).onAppear {
